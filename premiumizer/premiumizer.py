@@ -704,12 +704,7 @@ class MyHandler(events.PatternMatchingEventHandler):
                     'watchdir file %s no longer exists', watchdir_file)
                 return
             logger.info('New watchdir file detected: %s', watchdir_file)
-            dirname = os.path.basename(
-                os.path.normpath(os.path.dirname(watchdir_file)))
-            if dirname in cfg.download_categories:
-                category = dirname
-            else:
-                category = ''
+            category = get_watchdir_category(watchdir_file)
             if watchdir_file.endswith('.torrent'):
                 id, name2 = upload_torrent(watchdir_file)
                 if id == 'duplicate':
@@ -819,6 +814,21 @@ class MyHandler(events.PatternMatchingEventHandler):
                 scheduler.scheduler.get_job('walk_watchdir').resume()
     def on_created(self, event):
         self.process(event)
+
+
+def get_watchdir_category(watchdir_file):
+    """Return the configured category for a file's relative watchdir path."""
+    watchdir_root = os.path.abspath(cfg.watchdir_location)
+    file_directory = os.path.abspath(os.path.dirname(watchdir_file))
+    relative_directory = os.path.relpath(file_directory, watchdir_root)
+    if relative_directory == os.curdir or relative_directory.startswith(os.pardir + os.sep):
+        return ''
+
+    normalized_directory = os.path.normcase(os.path.normpath(relative_directory))
+    for category in cfg.download_categories:
+        if os.path.normcase(os.path.normpath(category)) == normalized_directory:
+            return category
+    return ''
 
 
 def retry_cloud(method, task):
@@ -2464,7 +2474,7 @@ def settings():
             prem_config.set('downloads', 'remove_cloud_delay', request.form.get('remove_cloud_delay'))
             prem_config.set('upload', 'watchdir_location', request.form.get('watchdir_location'))
             prem_config.set('downloads', 'nzbtomedia_location', request.form.get('nzbtomedia_location'))
-            for x in range(1, 7):
+            for x in range(1, 21):
                 prem_config.set('categories', ('cat_name' + str([x])), request.form.get('cat_name' + str([x])))
                 prem_config.set('categories', ('cat_dir' + str([x])), request.form.get('cat_dir' + str([x])))
                 prem_config.set('categories', ('cat_ext' + str([x])), request.form.get('cat_ext' + str([x])))
@@ -2490,8 +2500,8 @@ def settings():
             flash('settings saved', 'info')
     # get_prem_folders()
     categories_amount = len(cfg.download_categories) + 1
-    if categories_amount < 7:
-        categories_amount = 7
+    if categories_amount < 21:
+        categories_amount = 21
     return render_template('settings.html', settings=prem_config, cfg=cfg, categories_amount=categories_amount)
 
 

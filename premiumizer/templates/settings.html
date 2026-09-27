@@ -390,16 +390,16 @@
                         <input type="text" autocomplete="off" class="form-control" placeholder="Name"
                                name="{{ "cat_name["+x|string+"]" }}"
                                aria-describedby="basic-addon1"
-                               value="{{ settings.get('categories', 'cat_name['+x|string+']') }}">
+                                value="{{ settings.get('categories', 'cat_name['+x|string+']', fallback='') }}">
                         <input type="text" autocomplete="off" class="form-control" placeholder="Download Location"
                                name="{{ "cat_dir["+x|string+"]" }}"
                                aria-describedby="basic-addon1"
-                               value="{{ settings.get('categories', 'cat_dir['+x|string+']') }}">
+                                value="{{ settings.get('categories', 'cat_dir['+x|string+']', fallback='') }}">
                         <input type="text" autocomplete="off" class="form-control" placeholder="Extensions"
                                name="{{ "cat_ext["+x|string+"]" }}"
                                aria-describedby="basic-addon1"
-                               value="{{ settings.get('categories', 'cat_ext['+x|string+']') }}">
-                        {% if settings.get('categories', 'cat_ext_blacklist['+x|string+']') == '1' %}
+                                value="{{ settings.get('categories', 'cat_ext['+x|string+']', fallback='') }}">
+                         {% if settings.get('categories', 'cat_ext_blacklist['+x|string+']', fallback='0') == '1' %}
                             <input type="checkbox" class="form-control bootstrap_switch"
                                     name="{{ "cat_ext_blacklist["+x|string+"]" }}"
                                     data-size="small" data-label-text="Blacklist Ext" checked>
@@ -408,7 +408,7 @@
                                     name="{{ "cat_ext_blacklist["+x|string+"]" }}"
                                     data-size="small" data-label-text="Blacklist Ext">
                         {% endif %}
-                        {% if  settings.get('categories', 'cat_delsample['+x|string+']')    == '1' %}
+                         {% if settings.get('categories', 'cat_delsample['+x|string+']', fallback='0') == '1' %}
                             <input type="checkbox" class="form-control bootstrap_switch"
                                    name="{{ "cat_delsample["+x|string+"]" }}"
                                    data-size="small" data-label-text="Delete samples" checked>
@@ -417,7 +417,7 @@
                                    name="{{ "cat_delsample["+x|string+"]" }}"
                                    data-size="small" data-label-text="Delete samples">
                         {% endif %}
-                        {% if  settings.get('categories', 'cat_nzbtomedia['+x|string+']')    == '1' %}
+                         {% if settings.get('categories', 'cat_nzbtomedia['+x|string+']', fallback='0') == '1' %}
                             <input type="checkbox" class="form-control bootstrap_switch"
                                    name="{{ "cat_nzbtomedia["+x|string+"]" }}"
                                    data-size="small" data-label-text="NZBtomedia" checked>
