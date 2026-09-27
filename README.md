@@ -36,7 +36,7 @@ You need to set the correct PUID and PGID equal to the user that has rw access t
 services:
   premiumizer:
     container_name: premiumizer
-    image: neox387/premiumizer
+    image: ghcr.io/f43nd1r/premiumizer:latest
     restart: unless-stopped
     ports:
       - 5000:5000
@@ -57,7 +57,7 @@ services:
 2. Identify (or create) the locations for blackhole and downloads that Premiumizer will use
 3. SSH into your syno and figure out the PUID and PGID of the user that has access to these folders
 4. Open Docker app
-5. Under 'Registry': Download the neox387/premiumizer image
+5. Under 'Registry': Download the ghcr.io/f43nd1r/premiumizer:latest image
 6. Under 'Image': Select the image and click 'launch'
 7. Map a port of your chosing to '5000' (e.g. Chosing 5555 to 5000, means your Premiumizer will be accessible through 5555)
 8. Map your blackhole folder to '/blackhole'
@@ -73,7 +73,7 @@ services:
 
 1. Stop the container
 2. Right click the container: Action -> Clear/Rest
-3. Under 'Registry': Download the neox387/premiumizer image (this will pull in the latest image)
+3. Under 'Registry': Download the ghcr.io/f43nd1r/premiumizer:latest image (this will pull in the latest image)
 4. Start the container
 
 ## Windows Installer
